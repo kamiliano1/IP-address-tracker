@@ -19,7 +19,7 @@ function App() {
       longitude: -122.08385,
       postalCode: "94035",
       region: "California",
-      timezone: "-08:00",
+      timeZone: "-08:00",
           }
   }
   )
@@ -41,7 +41,7 @@ function onClickk(e) {
       location:data.location.city,
       region:data.location.region,
       postalCode:data.location.postalCode,
-      timezone:data.location.timezone,
+      timeZone:data.location.timezone,
       latitude:data.location.lat,
       longitude:data.location.lng,
   })
@@ -140,15 +140,65 @@ const handleSubmit = (event) => {
     
 //   return <button onClick={onClick}>Add marker on click</button>;
 // }
+
+// setIpAdress({
+//   ip:data.ip,
+//   isp:data.isp,
+//   location:data.location.city,
+//   region:data.location.region,
+//   postalCode:data.location.postalCode,
+//   timezone:data.location.timezone,
+//   latitude:data.location.lat,
+//   longitude:data.location.lng,
+// })
+
+const { ip, isp, location, region, postalCode, timeZone, latitude, longitude } = ipAdress
+
   return (
   <div className="">
-      <MapContainer center={[ipAdress.latitude, ipAdress.longitude] || { lat: 50, lng: 30 }}  zoom={13} scrollWheelZoom={true} ref={setMap}>
+    <header className='fc-light text-center flex-column'>
+      <h1 className='fw-500'>IP Address Tracker</h1>
+
+    <form onSubmit={handleSubmit} className="text-center flex">
+    <input
+        type="text"
+        placeholder="Search for any IP address or domain"
+        onChange={handleChange}
+        name="lat"
+        value={typed.lat}
+    />
+    <button className='bgc-dark fc-light flex' onClick={onClickk} ><img src="images/icon-arrow.svg" alt="" /></button>
+    </form>
+    </header>
+    <main>
+      <div className='ip--container flex-column container bgcs-light text-center bgc'>
+        <div className='flow'>
+          <h2 className='letter-spacing upper-case fc-very-grey fs-100 fw-500'>Ip address</h2>
+          <p className='fc-very-dark-grey fs-300 fw-700'>{ip}</p>
+        </div>
+        <span></span>
+        <div className='flow'>
+          <h2 className='letter-spacing upper-case fc-very-grey fs-100 fw-500'>Location</h2>
+          <p className='fc-very-dark-grey fs-300 fw-700'>{location}, {region} {postalCode}</p>
+        </div>
+        <span></span>
+        <div className='flow'>
+          <h2 className='letter-spacing upper-case fc-very-grey fs-100 fw-500'>Timezone</h2>
+          <p className='fc-very-dark-grey fs-300 fw-700'>UTC {timeZone}</p>
+        </div>
+        <span></span>
+        <div className='flow'>
+          <h2 className='letter-spacing upper-case fc-very-grey fs-100 fw-500'>Isp</h2>
+          <p className='fc-very-dark-grey fs-300 fw-700'>{isp}</p>
+        </div>
+      </div>
+      <MapContainer center={[latitude, longitude] || { lat: 50, lng: 30 }}  zoom={13} scrollWheelZoom={false} ref={setMap}>
       {/* <MyComponent /> */}
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
-    <Marker position={[ipAdress.latitude, ipAdress.longitude]}>
+    <Marker position={[latitude, longitude]}>
       <Popup>
         
         A pretty CSS3 popup. <br /> Easily customizable.
@@ -165,24 +215,10 @@ const handleSubmit = (event) => {
     
   <FlyToTarget />
   </MapContainer>
+
+    </main>
   {/* <FlyToButton /> */}
-  <form onSubmit={handleSubmit}>
-  <input
-      type="text"
-      placeholder="First Name"
-      onChange={handleChange}
-      name="lat"
-      value={typed.lat}
-  />
-    <input
-      type="text"
-      placeholder="First Name"
-      onChange={handleChange}
-      name="long"
-      value={typed.long}
-  />
-  <button  onClick={onClickk} >Click</button>
-  </form>
+  
                     {/* <button onClick={handleOnFlyTo} >Click2</button> */}
   {/* <div id="map">
 
