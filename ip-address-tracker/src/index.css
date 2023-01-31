@@ -107,9 +107,6 @@ select {
 .bgc-dark { background-color: hsl(var(--c-dark)) }
 /* Font Size */
 
-.bgc {
-  background-color: teal
-}
 
 .fs-400 { font-size: var(--fs-400) }
 .fs-300 { font-size: var(--fs-300) }
@@ -154,15 +151,21 @@ select {
   /* align-self: center; */
 }
 
-.ip--container {
-  position: absolute;
-  width: 90%;
-  margin-inline: auto;
+.sr-only {
+  position: absolute; 
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px; 
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; /* added line */
+  border: 0;
 }
 
 
 .leaflet-container { 
-  height: 70vh; 
+  height: 100vh; 
   background-color: teal;
   width: 100%;
 }
@@ -170,30 +173,39 @@ select {
 /* Header   */
 /* ******** */
 
-header {
-  background-image: url(/images/pattern-bg.png);
-  background-color: hsl( var(--c-very-dark-grey) / .6);
-  height: 60vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  justify-content: center;
-  position: relative;
-  z-index: -1;
+@media(max-width:35rem) {
+  .ip--container span {
+    display: none;
+  }
 }
 
+header {
+  padding-top: 2.5rem;
+  /* padding-top: 15rem; */
+  background-image: url(/images/pattern-bg.png);
+  background-color: hsl( var(--c-very-dark-grey) / .6);
+  height: 300px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* justify-content: center; */
+  /* position: relative; */
+  --gap: 0rem
 
+}
 form {
   justify-content: center;
   justify-items: center;
   align-content: center;
   place-items: center;
+  /* width: 100%; */
+  /* background-color: red; */
   /* position: relative; */
 
 }
 
 form input {
   height: 100%;
-  width: 70%;
+  width: 100%;
   border-radius: 10px 0 0 10px;
   border: none;
   padding: 1rem;
@@ -202,46 +214,67 @@ form input {
 
 form button {
   height: 100%;
+  /* width: 10%; */
   aspect-ratio: 1;
   justify-content: center;
   align-items: center;
   border: none;
   border-radius: 0 10px 10px 0;
+  cursor: pointer;
   
+}
+form button:active,
+form button:hover {
+  opacity: .5;
 }
 
 /* Main  */
 
-main .flex-column {
+.ip--container {
+  padding-block:1rem;
+  /* position: absolute; */
+  width: 90%;
+  /* margin-inline: auto; */
+  
   border-radius: 10px;
-  padding: 2rem;
+  /* padding: 2rem; */
   /* margin-top: -40px; */
   z-index: 99999;
   /* position: absolute; */
+  margin-block: 0;
+  --gap:1rem
 }
 
 
-@media (min-width:700px) {
 
-  form {
+ @media (min-width:700px) {
+
+  header {
+    height: 220px;
+    padding-top: 1rem;
+  }
+
+  form input{
     width: 50%;
-    margin-inline: auto;
+    /* margin-inline: auto; */
   }
 
-  main .flex-column {
+  .ip--container {
+    padding-inline: 1rem;
     flex-direction: row;
-    /* justify-content: space-between; */
-    --gap: 3rem;
+    justify-content: space-around;
+    --gap: 1rem;
     text-align: start;
-    justify-content: center;
+    justify-content: space-evenly;
     position: relative;
-  }
+    width: 80%;
+  } 
 
   .flow > *:where(:not(:first-child)) {
     margin-top: var(--flow-space, .1rem);
-  }
+  } 
 
-  /* main .flow:not(:first-child)::before {
+   main .flow:not(:first-child)::before {
     content: "a";
     height: 100%;
     width: 1px;
@@ -252,13 +285,14 @@ main .flex-column {
     align-self: center;
     margin-right: 2rem;
     
-  } */
+  } 
 
-  main span {
+  .ip--container span {
     display: flex;
     max-height: 100px;
     width: 1px;
     background-color: hsl( var(--c-dark-grey));
     position: relative;
   }
-}
+} 
+

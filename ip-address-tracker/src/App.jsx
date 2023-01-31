@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents, ZoomControl } from 'react-leaflet'
 // import L from "leaflet"
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   const [map, setMap] = useState(()=>null)
   const [position, setPosition] = useState({lat:51.505, long:-0.09})
-  const [typed, setTyped] = useState({lat:"", long:""})
+  const [typed, setTyped] = useState("")
   // const [position, setPosition] = useState(()=>[51.505, -0.09])
   // const [ipAdress, setIpAdress] = useState(null)
   const [ipAdress, setIpAdress] = useState( ()=> {
@@ -23,6 +23,10 @@ function App() {
           }
   }
   )
+  useEffect(()=>{
+    setIpAdress("")
+
+  },[])
 
 
 
@@ -30,9 +34,19 @@ function App() {
 function onClickk(e) {
   e.preventDefault()
   // setPosition({lat:typed.lat, long:typed.long})
-  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_9EuNfN5MKmLWFLAw25PFyR3RiFCNA&ipAddress=${typed.lat}`)
+  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_9EuNfN5MKmLWFLAw25PFyR3RiFCNA&ipAddress=${typed}`)
   // fetch("https://geo.ipify.org/api/v2/country,city?apiKey=at_9EuNfN5MKmLWFLAw25PFyR3RiFCNA&ipAddress=8.8.8.8")
-  .then(res=>res.json())
+  .then(res=>{
+    if (res.ok) {
+      setTyped("")
+      return res.json()
+    }
+    else {
+      return Promise.reject(res)
+    }
+    // return res.ok ? res.json() : 
+    
+  })
   .then(data=>{
     console.log(data)
     setIpAdress({
@@ -50,6 +64,15 @@ function onClickk(e) {
   // console.log(position)
 }
     )
+    .catch((res) => {
+      console.log(res.status, res.statusText);
+      setIpPlaceHolder(res.statusText)
+      setTyped("")
+      // 3. get error messages, if any
+      // response.json().then((json: any) => {
+      //   console.log(json);
+      // })
+    });
 
   
   // setTimeout(()=>{
@@ -87,47 +110,11 @@ function FlyToTarget() {
 }
 
 function handleChange(e) {
-  setTyped(prevFormData => {
-      return {
-          ...prevFormData,
-          [e.target.name]: e.target.value
-      }
-  })
+  setIpPlaceHolder("Search for any IP address or domain")
+  setTyped(e.target.value)
 }
+  
 
-
-// useEffect(()=>{
-
-// },[position])
-
-// function LocationMarker(props) {
-
-//   const map = useMapEvents({
-//     click() {
-//       map.flyTo([props.lat, props.lon], 14,{
-//         duration: 2
-//       })
-
-//     },
-
-//   })
-
-//   return [props.lat, props.lon] === null ? null : (
-//     <Marker position={[props.lat, props.lon]}>
-//       <Popup>You are here</Popup>
-//     </Marker>
-//   )
-// }
-// function MyComponent() {
-//   const map = useMap()
-//   console.log('map center:', map.getCenter())
-//   return null
-// }
-
-// setTimeout(()=>{
-//   setPosition([Math.floor(Math.random()*30), Math.floor(Math.random()*30)])
-
-// },5000)
 
 const handleSubmit = (event) => {
   event.preventDefault();
@@ -152,6 +139,14 @@ const handleSubmit = (event) => {
 //   longitude:data.location.lng,
 // })
 
+
+const iconArrow = L.icon({
+  iconUrl: "./images/icon-location.svg",
+  iconSize: [46, 56],
+  iconAnchor: [23, 56],
+  popupAnchor: [0, -57],
+})
+const [ipPlaceHolder, setIpPlaceHolder] = useState("Search for any IP address or domain")
 const { ip, isp, location, region, postalCode, timeZone, latitude, longitude } = ipAdress
 
   return (
@@ -159,19 +154,18 @@ const { ip, isp, location, region, postalCode, timeZone, latitude, longitude } =
     <header className='fc-light text-center flex-column'>
       <h1 className='fw-500'>IP Address Tracker</h1>
 
-    <form onSubmit={handleSubmit} className="text-center flex">
+    <form onSubmit={handleSubmit} className="text-center flex container fs-100">
     <input
         type="text"
-        placeholder="Search for any IP address or domain"
+        placeholder={ipPlaceHolder}
         onChange={handleChange}
-        name="lat"
-        value={typed.lat}
+        name="typed"
+        value={typed}
     />
-    <button className='bgc-dark fc-light flex' onClick={onClickk} ><img src="images/icon-arrow.svg" alt="" /></button>
+    <button className='bgc-dark fc-light flex' onClick={onClickk} ><span className='sr-only'>Search for IP address</span><img src="images/icon-arrow.svg" alt="Search" /></button>
     </form>
-    </header>
-    <main>
-      <div className='ip--container flex-column container bgcs-light text-center bgc'>
+    {ipAdress &&
+      <div className='ip--container flex-column container bgcs-light text-center bgc-light'>
         <div className='flow'>
           <h2 className='letter-spacing upper-case fc-very-grey fs-100 fw-500'>Ip address</h2>
           <p className='fc-very-dark-grey fs-300 fw-700'>{ip}</p>
@@ -192,18 +186,31 @@ const { ip, isp, location, region, postalCode, timeZone, latitude, longitude } =
           <p className='fc-very-dark-grey fs-300 fw-700'>{isp}</p>
         </div>
       </div>
-      <MapContainer center={[latitude, longitude] || { lat: 50, lng: 30 }}  zoom={13} scrollWheelZoom={false} ref={setMap}>
+    }
+    </header>
+    
+    <main>
+      <MapContainer center={[latitude, longitude]}  zoom={10} scrollWheelZoom={true} zoomControl={false} ref={setMap}>
       {/* <MyComponent /> */}
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
-    <Marker position={[latitude, longitude]}>
+    {/* <ZoomControl position='bottomright' /> */}
+{ipAdress && <Marker position={[latitude, longitude]} icon={iconArrow}>
+      <Popup>
+       <div className='text-center'>
+      {location}, {region} {postalCode} <br /> {ip}
+        </div> 
+      </Popup>
+    </Marker>
+    }
+{/* { ipAdress &&   <Marker position={[latitude, longitude]} icon={BoatIcon}>
       <Popup>
         
         A pretty CSS3 popup. <br /> Easily customizable.
       </Popup>
-    </Marker>
+    </Marker>} */}
     {/* <Marker position={[11.505, -1.09]}>
       <Popup>
         A pretty CSS3 popup. <br /> Easily customizable.
@@ -217,6 +224,7 @@ const { ip, isp, location, region, postalCode, timeZone, latitude, longitude } =
   </MapContainer>
 
     </main>
+    
   {/* <FlyToButton /> */}
   
                     {/* <button onClick={handleOnFlyTo} >Click2</button> */}
