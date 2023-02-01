@@ -18,13 +18,6 @@ dl,
 dd {
   margin: 0;
 }
-
-/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
-  list-style: none;
-}
-
 /* Set core root defaults */
 html:focus-within {
   scroll-behavior: smooth;
@@ -36,12 +29,13 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   font-family: var(--ff-Rubick);
+  background-image: url(/images/pattern-bg.png);
+  background-color: #4A4BAA;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-/* A elements that don't have a class get default styles */
-a:not([class]) {
-  text-decoration-skip-ink: auto;
-}
+
 
 /* Make images easier to work with */
 img,
@@ -102,7 +96,6 @@ select {
 /* Background Color */
 
 .bgc-very-dark-grey { background-color: hsl(var(--c-very-dark-grey)) }
-.bgc-very-grey { background-color: hsl(var(--c-dark-grey)) }
 .bgc-light { background-color: hsl(var(--c-light)) }
 .bgc-dark { background-color: hsl(var(--c-dark)) }
 /* Font Size */
@@ -144,11 +137,10 @@ select {
 }
 
 .container {
-  /* text-align: center; */
   margin-block: 2rem;
   margin-inline: auto;
   width: 90%;
-  /* align-self: center; */
+  max-width: 1200px;
 }
 
 .sr-only {
@@ -165,41 +157,30 @@ select {
 
 
 .leaflet-container { 
-  height: 100vh; 
-  background-color: teal;
+  /* height: 100vh;  */
+  height: 100vh;
+
   width: 100%;
 }
 /********** */
 /* Header   */
 /* ******** */
 
-@media(max-width:35rem) {
-  .ip--container span {
-    display: none;
-  }
-}
-
 header {
   padding-top: 2.5rem;
-  /* padding-top: 15rem; */
   background-image: url(/images/pattern-bg.png);
   background-color: hsl( var(--c-very-dark-grey) / .6);
-  height: 300px;
+  height: 340px;
   background-size: cover;
   background-repeat: no-repeat;
-  /* justify-content: center; */
-  /* position: relative; */
   --gap: 0rem
-
 }
+
 form {
   justify-content: center;
   justify-items: center;
   align-content: center;
   place-items: center;
-  /* width: 100%; */
-  /* background-color: red; */
-  /* position: relative; */
 
 }
 
@@ -214,7 +195,6 @@ form input {
 
 form button {
   height: 100%;
-  /* width: 10%; */
   aspect-ratio: 1;
   justify-content: center;
   align-items: center;
@@ -232,35 +212,33 @@ form button:hover {
 
 .ip--container {
   padding-block:1rem;
-  /* position: absolute; */
   width: 90%;
-  /* margin-inline: auto; */
-  
   border-radius: 10px;
-  /* padding: 2rem; */
-  /* margin-top: -40px; */
   z-index: 99999;
-  /* position: absolute; */
   margin-block: 0;
   --gap:1rem
 }
 
-
+@media(max-width:700px) {
+  .ip--container span {
+    display: none;
+  }
+}
 
  @media (min-width:700px) {
 
   header {
-    height: 220px;
+    height: 240px;
     padding-top: 1rem;
   }
 
   form input{
     width: 50%;
-    /* margin-inline: auto; */
   }
 
   .ip--container {
     padding-inline: 1rem;
+    padding: 2rem 1rem;
     flex-direction: row;
     justify-content: space-around;
     --gap: 1rem;
@@ -270,28 +248,11 @@ form button:hover {
     width: 80%;
   } 
 
-  .flow > *:where(:not(:first-child)) {
-    margin-top: var(--flow-space, .1rem);
-  } 
-
-   main .flow:not(:first-child)::before {
-    content: "a";
-    height: 100%;
-    width: 1px;
-    background-color: hsl( var(--c-dark-grey));
-    position: relative;
-    position: absolute;
-    order:-1;
-    align-self: center;
-    margin-right: 2rem;
-    
-  } 
-
   .ip--container span {
     display: flex;
-    max-height: 100px;
+    height: 100%;
     width: 1px;
-    background-color: hsl( var(--c-dark-grey));
+    /* background-color: hsl( var(--c-dark-grey)); */
     position: relative;
   }
 } 
