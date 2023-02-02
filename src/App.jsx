@@ -17,7 +17,7 @@ useEffect(()=>{
 },[])
 
 function fetchIpAddress(address) {
-  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_9EuNfN5MKmLWFLAw25PFyR3RiFCNA&ipAddress=${address}`)
+  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey={key}&ipAddress=${address}`)
   .then(res=>{
     if (res.ok) {
       setTypedAddress("")
