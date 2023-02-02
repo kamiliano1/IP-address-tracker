@@ -65,4 +65,4 @@ Deleting a record on clicking on the map pin.
 ## Author
 
 - Website - [Kamil Szymon](https://github.com/kamiliano1)
-- Frontend Mentor - [@kamiliano1](hhttps://www.frontendmentor.io/profile/kamiliano1)
+- Frontend Mentor - [@kamiliano1](https://www.frontendmentor.io/profile/kamiliano1)
