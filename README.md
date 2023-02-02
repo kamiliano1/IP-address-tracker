@@ -34,7 +34,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [https://github.com/kamiliano1/IP-address-tracker](https://github.com/kamiliano1/IP-address-tracker)
-- Live Site URL: [https://sprightly-pika-86004b.netlify.app](https://sprightly-pika-86004b.netlify.app)
+- Live Site URL: [https://sprightly-pika-86004b.netlify.app](https://sprightly-pika-86004b.netlify.app) Adblock might block IP API
 
 ## My process
 
